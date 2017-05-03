@@ -9,7 +9,12 @@
 
 
 
+void ATankAIController::Tick(float DeltaSeconds) {
 
+  Super::Tick(DeltaSeconds);
+  GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+  
+}
 
 void ATankAIController::BeginPlay() {
   Super::BeginPlay();
@@ -21,19 +26,6 @@ void ATankAIController::BeginPlay() {
   else {
     UE_LOG(LogTemp, Error, TEXT("Missing a Tank for the AIcontroller;"));
   }
-
-
-  ATank* PlayerTank = GetPlayerTank();
-  if (PlayerTank) {
-    UE_LOG(LogTemp, Warning, TEXT("Targetting : %s"), *(PlayerTank->GetName()));
-  }
-  else {
-    UE_LOG(LogTemp, Error, TEXT("Cant find humans."));
-  }
-
-
-
-
 }
 
 ATank * ATankAIController::GetPlayerTank() const
