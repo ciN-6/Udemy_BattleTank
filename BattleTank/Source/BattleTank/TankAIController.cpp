@@ -3,7 +3,7 @@
 
 #include "BattleTank.h"
 #include "TankAIController.h"
-
+#include "Tank.h"
 #include "Controller/TankPlayerController.h"
 
 
@@ -20,12 +20,10 @@ void ATankAIController::BeginPlay() {
   Super::BeginPlay();
 
   ATank* ControlledTank = GetControlledTank();
-  if (ControlledTank) {
-    UE_LOG(LogTemp, Warning, TEXT("Enemy is controlling tank : %s"), *(ControlledTank->GetName()));
-  }
-  else {
+  if (!ControlledTank){
     UE_LOG(LogTemp, Error, TEXT("Missing a Tank for the AIcontroller;"));
   }
+  
 }
 
 ATank * ATankAIController::GetPlayerTank() const

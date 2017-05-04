@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "Tank.h"
 #include "TankPlayerController.h"
 
 #include <sstream>
@@ -17,11 +18,11 @@ void ATankPlayerController::BeginPlay() {
   Super::BeginPlay();
 
   ATank* ControlledTank = GetControlledTank();
-  if (ControlledTank) {
-    UE_LOG(LogTemp, Warning, TEXT("The Player is controlling tank : %s"), *(ControlledTank->GetName()) );
+  if (!ControlledTank) {
+    UE_LOG(LogTemp, Error, TEXT("Missing a Tank for the controller;"));
   }
   else {
-    UE_LOG(LogTemp, Error, TEXT("Missing a Tank for the controller;"));
+    ControlledTank->SetActorLabel("PLayerControlled");
   }
   
 }

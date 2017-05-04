@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "TankBarrel.h"
+#include "TankTurret.h"
 #include "TankAimingComponent.h"
 
 
@@ -15,28 +17,39 @@ UTankAimingComponent::UTankAimingComponent()
 }
 
 
-void UTankAimingComponent::SetBarrelRefence(UStaticMeshComponent* BarrelToSet) {
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet) {
   Barrel = BarrelToSet;
 }
 
 
-
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-  Super::BeginPlay();
-
-  // ...
-
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet) {
+  Turret = TurretToSet;
 }
 
 
 
+void UTankAimingComponent::MoveBarrel(FVector AimDirection) {
+
+  FRotator BarrelRotation = Barrel->GetForwardVector().Rotation();
+  FRotator AimAsRotator = AimDirection.Rotation();
+  FRotator DeltaRotator = AimAsRotator - BarrelRotation;
+  Barrel->Elevate(DeltaRotator.Pitch);
+
+}
+
+void UTankAimingComponent::MoveTurret(FVector AimDirection) {
+
+  FRotator TurretRotation = Turret->GetForwardVector().Rotation();
+  FRotator AimAsRotator = AimDirection.Rotation();
+  FRotator DeltaRotator = AimAsRotator - TurretRotation;
+  Barrel->Elevate(DeltaRotator.Pitch);
+
+}
+
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 
-  if (!Barrel) { return; }
-  FString ThisTankName = GetOwner()->GetName();
+  if (!Barrel) { return; }  
   FVector ReturnedVelocity;
   if (UGameplayStatics::SuggestProjectileVelocity(
     this,
@@ -44,25 +57,18 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
     Barrel->GetSocketLocation(FName("BarrelEnd")),
     HitLocation,
     LaunchSpeed,
-    false,0.f,0.f,ESuggestProjVelocityTraceOption::TraceFullPath
-  ) ) 
+    false,
+    0.f,
+    0.f,
+    ESuggestProjVelocityTraceOption::DoNotTrace
+  ))
   {
-    
-    UE_LOG(LogTemp, Warning, TEXT("%s Fires at %s, HITLocation : %s"), *ThisTankName, *ReturnedVelocity.GetSafeNormal().ToString(), *HitLocation.ToString());
-  }
-  else {
-    UE_LOG(LogTemp, Warning, TEXT("%s Cannot find target at %s"), *ThisTankName, *HitLocation.ToString());
+
+    FVector AimDirection = ReturnedVelocity.GetSafeNormal();
+    MoveBarrel(AimDirection);
+    MoveTurret(AimDirection);
   }
   
 
-  
-}
-
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-  Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-  // ...
 }
 
