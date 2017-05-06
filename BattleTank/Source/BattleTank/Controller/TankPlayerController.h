@@ -26,11 +26,11 @@ public:
 
 private:
 
-  UPROPERTY(EditAnywhere)
+  UPROPERTY(EditDefaultsOnly)
   float CrossairXLoc = .5f;  
-  UPROPERTY(EditAnywhere)
+  UPROPERTY(EditDefaultsOnly)
   float CrossairYLoc = .3333f;
-  UPROPERTY(EditAnywhere)
+  UPROPERTY(EditDefaultsOnly)
   float LineTraceRange = 1000000.0f;
 
   // make the barrel move towards the crossairs.

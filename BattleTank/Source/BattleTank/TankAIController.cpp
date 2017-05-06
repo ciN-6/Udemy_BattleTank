@@ -7,40 +7,27 @@
 #include "Controller/TankPlayerController.h"
 
 
+void ATankAIController::BeginPlay() {
+  Super::BeginPlay();
+}
+
+
 
 
 void ATankAIController::Tick(float DeltaSeconds) {
 
+  ATank* PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+  if (!PlayerTank) { return; }
+  ATank* OwnTank = Cast<ATank>(GetPawn());
+  if (!OwnTank) { return; }
+
   Super::Tick(DeltaSeconds);
-  GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
-  
+  OwnTank->AimAt(PlayerTank->GetActorLocation());
+  OwnTank->Shoot();
 }
 
-void ATankAIController::BeginPlay() {
-  Super::BeginPlay();
 
-  ATank* ControlledTank = GetControlledTank();
-  if (!ControlledTank){
-    UE_LOG(LogTemp, Error, TEXT("Missing a Tank for the AIcontroller;"));
-  }
-  
-}
 
-ATank * ATankAIController::GetPlayerTank() const
-{
 
-  ATankPlayerController* PlayerController = (ATankPlayerController*)GetWorld()->GetFirstPlayerController();
-  if (!PlayerController) {
-    UE_LOG(LogTemp, Error, TEXT("Missing a Human controller"));
-    return nullptr;
-  }
 
-  ATank* Tank = PlayerController->GetControlledTank();
-  return Tank;
-}
 
-ATank* ATankAIController::GetControlledTank() const {
-
-  return Cast<ATank>(GetPawn());
-
-}

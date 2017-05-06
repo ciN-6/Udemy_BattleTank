@@ -21,9 +21,9 @@ void ATankPlayerController::BeginPlay() {
   if (!ControlledTank) {
     UE_LOG(LogTemp, Error, TEXT("Missing a Tank for the controller;"));
   }
-  else {
-    ControlledTank->SetActorLabel("PLayerControlled");
-  }
+  //else {
+  //  ControlledTank->SetActorLabel("PLayerControlled");
+  //}
   
 }
 
