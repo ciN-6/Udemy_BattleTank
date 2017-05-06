@@ -8,6 +8,7 @@
 class AProjectile;
 class UTankBarrel;
 class UTankTurret;
+class UTankMovementComponent;
 class UTankAimingComponent;
 
 
@@ -55,9 +56,13 @@ protected:
   // local Barrel
   UTankBarrel* Barrel = nullptr;
 
+  UPROPERTY(BlueprintReadOnly, Category = Input)
+  UTankMovementComponent* TankMovementComponent = nullptr;
 
+  // how much time to wait before firing again.
   UPROPERTY(EditDefaultsOnly, Category = Firing)
   float ReloadTime = 3.f;
 
+  // stores the last time this tank fired.
   double LastFireTime = 0;
 };

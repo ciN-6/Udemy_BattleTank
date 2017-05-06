@@ -17,6 +17,13 @@ class BATTLETANK_API ATankAIController : public AAIController
 	GENERATED_BODY()
 	
 
+public:
+  
+  // Distance where to stop moving when close enough to the goal.
+  UPROPERTY(EditDefaultsOnly, Category = Setup)
+  float CloseEnoughDistance = 3000.f;
+
+
 private:
   void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
