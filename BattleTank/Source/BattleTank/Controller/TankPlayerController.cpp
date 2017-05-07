@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "Tank.h"
+#include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
 #include <sstream>
@@ -17,33 +18,26 @@ void ATankPlayerController::Tick(float DeltaSeconds) {
 void ATankPlayerController::BeginPlay() {
   Super::BeginPlay();
 
-  ATank* ControlledTank = GetControlledTank();
-  if (!ControlledTank) {
-    UE_LOG(LogTemp, Error, TEXT("Missing a Tank for the controller;"));
+  UTankAimingComponent* AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+  if (ensure(AimingComponent)) {
+    FoundAimingComponent(AimingComponent);
   }
-  //else {
-  //  ControlledTank->SetActorLabel("PLayerControlled");
-  //}
-  
+  else {
+    UE_LOG(LogTemp, Error, TEXT("Missing AimingComponent"));
+  }
 }
 
 ATank* ATankPlayerController::GetControlledTank() const {
-
   return Cast<ATank> (GetPawn());
-
 }
 
 void ATankPlayerController::AimTowardsCrosshair() {
 
-  if (!GetControlledTank()) { return; }
+  if (!ensure(GetControlledTank())) { return; }
   FVector HitLocation;
   if (GetSightRayHitLocation(HitLocation)) {
     GetControlledTank()->AimAt(HitLocation);
   }
-
-
-  
-
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const{
@@ -52,8 +46,6 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
   int32 ViewportYSize;
   FVector2D CrosshairLocation;
   FVector LookDirection;
-  
-  
   
   GetViewportSize(ViewportXSize, ViewportYSize);
   CrosshairLocation = FVector2D(ViewportXSize*CrossairXLoc, ViewportYSize*CrossairYLoc);
@@ -68,7 +60,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const {
   
   FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetControlledTank());
-  //TraceParams.AddIgnoredActor(GetControlledTank());
+  
   FHitResult HitResult;
   FVector CamLocation = PlayerCameraManager->GetCameraLocation();
 

@@ -7,6 +7,8 @@
 #include "TankPlayerController.generated.h"
 
 class ATank;
+class UTankAimingComponent;
+
 /**
  * 
  */
@@ -22,7 +24,15 @@ public:
   virtual void Tick(float DeltaSeconds) override;
 
   // Get the Tank for this controller
+  UFUNCTION(BlueprintCallable, Category = "Setup")
   ATank* GetControlledTank() const;
+
+  
+protected:
+
+  UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+  void FoundAimingComponent(UTankAimingComponent* AimingComponentRef);
+
 
 private:
 

@@ -42,7 +42,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 
 
   float ForwardThrow = FVector::DotProduct(CurrentForwardDirection, IntendedDirection);
-  float TurnThrow = FVector::CrossProduct(IntendedDirection,CurrentForwardDirection).Z;
+  float TurnThrow = FVector::CrossProduct(CurrentForwardDirection,IntendedDirection).Z;
 
   IntendMoveForward(ForwardThrow);
   IntendTurnRight(TurnThrow);

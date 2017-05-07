@@ -8,7 +8,6 @@
 class AProjectile;
 class UTankBarrel;
 class UTankTurret;
-class UTankMovementComponent;
 class UTankAimingComponent;
 
 
@@ -30,24 +29,16 @@ public:
   // move the barrel of the tank toward a location.
   void AimAt(FVector HitLocation);
 
-  // Called to bind functionality to input
-  virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
   UFUNCTION(BlueprintCallable, Category = InputControls)
   void Shoot();
   
-  UFUNCTION(BlueprintCallable, Category = Setup)
-  void SetBarrelReference(UTankBarrel* Barrel);
-
-  UFUNCTION(BlueprintCallable, Category = Setup)
-  void SetTurretReference(UTankTurret* Turret);
-
-
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+
+  virtual void BeginPlay() override;
+
 
   // A Component used for aiming;
+  UPROPERTY(BlueprintReadOnly, Category = Setup)
   UTankAimingComponent* TankAimingComponent = nullptr;
 
   UPROPERTY(EditDefaultsOnly, Category = Firing)
@@ -55,9 +46,6 @@ protected:
 
   // local Barrel
   UTankBarrel* Barrel = nullptr;
-
-  UPROPERTY(BlueprintReadOnly, Category = Input)
-  UTankMovementComponent* TankMovementComponent = nullptr;
 
   // how much time to wait before firing again.
   UPROPERTY(EditDefaultsOnly, Category = Firing)

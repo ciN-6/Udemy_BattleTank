@@ -19,13 +19,13 @@ void ATankAIController::Tick(float DeltaSeconds) {
   Super::Tick(DeltaSeconds); 
   
   ATank* PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-  if (!PlayerTank) { return; }
+  if (!ensure(PlayerTank)) { return; }
   ATank* OwnTank = Cast<ATank>(GetPawn());
-  if (!OwnTank) { return; }
+  if (!ensure(OwnTank)) { return; }
 
   MoveToActor(PlayerTank, CloseEnoughDistance);
   OwnTank->AimAt(PlayerTank->GetActorLocation());
-  OwnTank->Shoot();
+  //OwnTank->Shoot();
 }
 
 
