@@ -18,7 +18,7 @@ public:
   virtual void Tick(float DeltaTime) override;
 
   // Lauch the projectile 
-  void LaucheProjectile(float speed);
+  void LaunchProjectile(float speed);
 
 protected:
 	// Called when the game starts or when spawned

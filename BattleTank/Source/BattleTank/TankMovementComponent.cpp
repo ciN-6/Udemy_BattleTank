@@ -26,7 +26,7 @@ void UTankMovementComponent::IntendTurnRight(float Throw) {
 
 void UTankMovementComponent::Init(UTankTrack* InLeftTrack, UTankTrack* InRightTrack) {
 
-  if (!InLeftTrack || !InRightTrack)
+  if (!ensure(InLeftTrack && InRightTrack))
   {
     UE_LOG(LogTemp, Error, TEXT("UTankMovementComponent::Init -- Missing Tracks."));
   }

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright ciN.
 
 #pragma once
 
@@ -6,8 +6,7 @@
 #include "AIController.h"
 #include "TankAIController.generated.h"
 
-class ATank;
-
+class UTankAimingComponent;
 /**
  * 
  */
@@ -23,8 +22,12 @@ public:
   UPROPERTY(EditDefaultsOnly, Category = Setup)
   float CloseEnoughDistance = 3000.f;
 
-
 private:
+
+
+  // The Aiming Component for barrel movement;
+  UTankAimingComponent* AimingComponent = nullptr;
+
   void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 

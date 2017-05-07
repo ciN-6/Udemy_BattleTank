@@ -1,47 +1,60 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright ciN.
 
 #pragma once
 
-#include "Tank.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
-class ATank;
 class UTankAimingComponent;
 
 /**
- * 
+ *
  */
 UCLASS()
-class BATTLETANK_API ATankPlayerController : public APlayerController
-{
-	GENERATED_BODY()
-	
+class BATTLETANK_API ATankPlayerController : public APlayerController {
+  GENERATED_BODY()
+
 public:
+
+  /**********
+  * Methods *
+  **********/
 
   virtual void BeginPlay() override;
 
   virtual void Tick(float DeltaSeconds) override;
 
-  // Get the Tank for this controller
-  UFUNCTION(BlueprintCallable, Category = "Setup")
-  ATank* GetControlledTank() const;
-
-  
 protected:
+
+  /*************
+  * Properties *
+  *************/
+
 
   UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
   void FoundAimingComponent(UTankAimingComponent* AimingComponentRef);
 
+protected:
+
+  /*************
+  * Properties *
+  *************/
+
+  UPROPERTY(EditDefaultsOnly)
+    float CrossairXLoc = .5f;
+  UPROPERTY(EditDefaultsOnly)
+    float CrossairYLoc = .3333f;
+  UPROPERTY(EditDefaultsOnly)
+    float LineTraceRange = 1000000.0f;
+
+  // The Aiming Component for barrel movement;
+  UTankAimingComponent* AimingComponent = nullptr;
 
 private:
 
-  UPROPERTY(EditDefaultsOnly)
-  float CrossairXLoc = .5f;  
-  UPROPERTY(EditDefaultsOnly)
-  float CrossairYLoc = .3333f;
-  UPROPERTY(EditDefaultsOnly)
-  float LineTraceRange = 1000000.0f;
+  /**********
+  * Methods *
+  **********/
 
   // make the barrel move towards the crossairs.
   void AimTowardsCrosshair();
@@ -51,5 +64,6 @@ private:
   bool GetLookDirection(FVector2D ScreenPoint, FVector & OutLookDirection) const;
 
   bool GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const;
-  
+
+
 };
